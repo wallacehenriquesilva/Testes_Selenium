@@ -24,4 +24,10 @@ public class ProdutoModel implements Serializable{
     public void setProPreco(int proPreco) {
         this.proPreco = proPreco;
     }
+
+    @Override
+    public String toString() {
+        return "Valor do Produto: R$" + getProPreco() + "\n"
+                + "Descrição do Produto: " + getProDesc();
+    }
 }

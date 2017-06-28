@@ -57,14 +57,8 @@ public class XPath {
     public static final String TD1 = "//div[@class='_u7i']/table/tbody/tr/td[1]";
 
 
-
-    public static final String CAMPO_PESQUISA = "//input[@name='as_word']";
-    public static final String BTN_PESQUISAR = "//button[@type='submit']";
-
     //MERCADO LIVRE
-    public static final String RESULT_QTD = "//div[@id='inner-main']/aside[@class='filters grid']/div[@class='quantity-results']";
-    public static final String ITENS = "//ol[@id='searchResults']/li/div/a/div[@class='item__info ']";
-    public static final String ITEM_VALOR = "./div[@class='item__price ']/span[@class='price-fraction']";
+
 
 
 }

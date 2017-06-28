@@ -27,7 +27,7 @@ public class Controller {
         //trt.incluir(browser);
         //alerta.incluir(browser);
         //email.envia(browser);
-        ml.pesquisar(browser, "tv-plasma");
+        ml.search(browser, "tv-plasma");
     }
 
 }
