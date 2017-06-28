@@ -49,31 +49,24 @@ public class MercadoLivre {
             }
 
 
-
             int paginas = qtd / 50;
             int n = 1;
             ArrayList<ProdutoModel> listProduto = new ArrayList<>();
-            ProdutoModel produto;
+
 
             ///System.out.println("Tamanho da lista " + listElementos.size());
             for (int i = 0; i <= paginas; i++) {
                 browserDriver.getBrowser().get(URL_MERCADO_LIVRE + pesquisa + "_Desde_" + n);
+                try {
+                    List<WebElement> listElementos = browserDriver.getBrowser().findElements(By.xpath(ITENS));
 
-                List<WebElement> listElementos = browserDriver.getBrowser().findElements(By.xpath(ITENS));
-                /*for (WebElement element : listElementos) {
-                    produto = new ProdutoModel();
-                    //WebElement we = element.findElement(By.xpath(XPath.ITEM_VALOR)).ge;
-                    //System.out.println("Valor: " + element.findElement(By.xpath(XPath.ITEM_VALOR)).getText());
-                    //System.out.println("Descricao: " + element.findElement(By.xpath("./h2/span[@class='main-title']")).getText());
-                    produto.setProPreco(Integer.parseInt(element.findElement(By.xpath(XPath.ITEM_VALOR)).getText().replace(".", "")));
-                    produto.setProDesc(element.findElement(By.xpath("./h2/span[@class='main-title']")).getText().toString());
-                    listProduto.add(produto);
+                    listElementos.stream()
+                            .map(this::createProduto)
+                            .forEach(listProduto::add);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
 
-                }*/
-                //
-                listElementos.stream()
-                        .map(this::createProduto)
-                        .forEach(listProduto::add);
                 n += 50;
             }
 
