@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,17 +37,23 @@ public class MercadoLivre {
             browserDriver.getBrowser().get(URL_MERCADO_LIVRE + pesquisa);
 
             //Pega o elemento que contem a quantidade total
-            WebElement e = browserDriver.getBrowser().findElement(By.xpath(RESULT_QTD));
+            Integer numeroResultados = Optional.ofNullable(browserDriver.getBrowser().findElement(By.xpath(RESULT_QTD)))
+                    .map(WebElement::getText)
+                    .map(NUMERO_ITENS::matcher)
+                    .filter(Matcher::find)
+                    .map(Matcher::group)
+                    .map(Integer::valueOf)
+                    .orElse(0);
 
-            System.out.println("Quantidade total da pesquisa " + e.getText());
+            System.out.println("Quantidade total da pesquisa " + numeroResultados);
 
-            //Regex apenas do numero
+            /*//Regex apenas do numero
             Matcher matcher = NUMERO_ITENS.matcher(e.getText().toString());
             if (matcher.find()) {
 
                 qtd = Integer.parseInt(matcher.group(1));
-                System.out.println("Quantidade " + qtd);
-            }
+            }*/
+            System.out.println("Quantidade " + numeroResultados);
 
 
             int paginas = qtd / 50;
@@ -63,6 +70,7 @@ public class MercadoLivre {
                     listElementos.stream()
                             .map(this::createProduto)
                             .forEach(listProduto::add);
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -82,7 +90,9 @@ public class MercadoLivre {
     private ProdutoModel createProduto(WebElement webElement) {
         ProdutoModel model = new ProdutoModel();
         model.setProPreco(Integer.parseInt(webElement.findElement(By.xpath(ITEM_VALOR)).getText().replace(".", "")));
-        model.setProDesc(webElement.findElement(By.xpath(ITEM_DESCRICAO)).getText().toString());
+        model.setProDesc(Optional.ofNullable(webElement.findElement(By.xpath(ITEM_DESCRICAO)))
+                .map(WebElement::getText)
+                .orElse(""));
         return model;
     }
 }
