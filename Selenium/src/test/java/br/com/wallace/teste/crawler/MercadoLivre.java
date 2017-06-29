@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -73,10 +74,15 @@ public class MercadoLivre {
             //Exibe todos os dados da lista, usando o toString @Override
             listProduto.forEach(System.out::println);
 
+            Optional<ProdutoModel> p = listProduto.stream()
+                    .filter(s -> s.getProPreco() == 300)
+                    .findFirst();
 
+            System.out.println(p.toString());
         } catch (Exception e) {
 
         }
+
     }
 
     private ProdutoModel createProduto(WebElement webElement) {
