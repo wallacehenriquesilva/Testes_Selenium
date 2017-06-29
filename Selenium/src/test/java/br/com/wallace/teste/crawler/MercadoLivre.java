@@ -6,10 +6,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
+import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 
 /**
  * Created by FINCH-WALLACE on 27/06/2017.
@@ -37,6 +39,7 @@ public class MercadoLivre {
             browserDriver.getBrowser().get(URL_MERCADO_LIVRE + pesquisa);
 
             //Pega o elemento que contem a quantidade total
+            //Regex dos numeros
             Integer numeroResultados = Optional.ofNullable(browserDriver.getBrowser().findElement(By.xpath(RESULT_QTD)))
                     .map(WebElement::getText)
                     .map(NUMERO_ITENS::matcher)
@@ -60,7 +63,6 @@ public class MercadoLivre {
             int n = 1;
             ArrayList<ProdutoModel> listProduto = new ArrayList<>();
 
-
             ///System.out.println("Tamanho da lista " + listElementos.size());
             for (int i = 0; i <= paginas; i++) {
                 browserDriver.getBrowser().get(URL_MERCADO_LIVRE + pesquisa + "_Desde_" + n);
@@ -81,6 +83,8 @@ public class MercadoLivre {
             //Exibe todos os dados da lista, usando o toString @Override
             listProduto.forEach(System.out::println);
 
+            IntSummaryStatistics stats = listProduto.stream().mapToInt(ProdutoModel::getProPreco).summaryStatistics();
+            System.out.println("Maior valor " +  stats.getMax());
 
         } catch (Exception e) {
 
@@ -95,4 +99,7 @@ public class MercadoLivre {
                 .orElse(""));
         return model;
     }
+
+
+
 }
